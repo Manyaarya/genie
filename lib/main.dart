@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
+import 'screens/home_screen.dart';
+import 'utils/routes.dart';
 
-class Myapp extends StatefulWidget {
-  const Myapp({super.key});
-
-  @override
-  State<Myapp> createState() => _MyappState();
+void main() {
+  runApp(AiGenieApp());
 }
 
-class _MyappState extends State<Myapp> {
+class AiGenieApp extends StatelessWidget {
+  const AiGenieApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return MaterialApp(
+      title: 'AiGenie',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,  // Customize your theme colors
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      initialRoute: '/',             // Define initial route
+      routes: appRoutes,             // Import routes from utils/routes.dart
+    );
   }
 }
