@@ -9,6 +9,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('AiGenie'),
+        centerTitle: true,
       ),
       body: GridView.count(
         crossAxisCount: 2,            // 2 cards per row
@@ -18,6 +19,9 @@ class HomeScreen extends StatelessWidget {
         children: const [
           AssistantCard(title: 'Recipe Generator', icon: Icons.restaurant, route: '/recipe'),
           AssistantCard(title: 'Caption Generator', icon: Icons.text_fields, route: '/caption'),
+          AssistantCard(title: 'Text Summarizer', icon: Icons.text_fields, route: './textsummarizer'),
+       
+          
           // Add more cards as you add assistants
         ],
       ),

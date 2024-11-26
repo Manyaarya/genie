@@ -18,7 +18,7 @@ class AssistantCard extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, size: 50, color: Colors.blueAccent),
+              Icon(icon, size: 50, color: const Color.fromARGB(255, 0, 0, 0)),
               const SizedBox(height: 10),
               Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             ],

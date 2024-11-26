@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'utils/routes.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  try {
+    await dotenv.load(fileName: "/Users/manya./Projects/aigenie/genie/.env");
+    print("API Key: ${dotenv.env['API_KEY']}");
+  } catch (e) {
+    print("Error loading .env file: $e");
+  }
   runApp(AiGenieApp());
 }
+
 
 class AiGenieApp extends StatelessWidget {
   const AiGenieApp({super.key});
