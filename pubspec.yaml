@@ -44,6 +44,7 @@ dependencies:
   flutter_markdown: ^0.7.4+3
   share_plus: ^10.1.2
   carousel_slider: ^5.0.0
+  webview_flutter: ^4.10.0
 
 
 dev_dependencies:
