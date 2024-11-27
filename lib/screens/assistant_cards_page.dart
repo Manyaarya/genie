@@ -19,6 +19,8 @@ class AssistantCardsPage extends StatelessWidget {
         children: const [
           AssistantCard(title: 'Recipe Generator', icon: Icons.restaurant, route: '/recipe'),
           AssistantCard(title: 'Caption Generator', icon: Icons.text_fields, route: '/caption'),
+          AssistantCard(title: 'Recipe from ingredients', icon: Icons.text_fields, route: '/ingredients'),
+          
        //   AssistantCard(title: 'Text Summarizer', icon: Icons.text_fields, route: '/textsummarizer'),
         ],
       ),
