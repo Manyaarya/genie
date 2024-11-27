@@ -4,52 +4,43 @@ class AssistantCard extends StatelessWidget {
   final String title;
   final IconData icon;
   final String route;
-  final Color backgroundColor;
-  final String imageAsset;  // Optional image asset
+  final String description; // New parameter for description
+  final String imagePath; // New parameter for image path
 
   const AssistantCard({
-    super.key,
+    Key? key,
     required this.title,
     required this.icon,
     required this.route,
-    this.backgroundColor = Colors.teal,  // Default color
-    this.imageAsset = '',  // Empty by default
-  });
+    required this.description,
+    required this.imagePath,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, route),
-      child: Card(
-        elevation: 6,
-        color: backgroundColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        child: Stack(
-          alignment: Alignment.center,
+    return Card(
+      elevation: 4,
+      child: InkWell(
+        onTap: () {
+          Navigator.pushNamed(context, route);
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Background image
-            if (imageAsset.isNotEmpty)
-              Positioned.fill(
-                child: Opacity(
-                  opacity: 0.3,  // Adjust opacity for readability
-                  child: Image.asset(imageAsset, fit: BoxFit.cover),
-                ),
+            Image.asset(imagePath, height: 100), // Display the image
+            SizedBox(height: 10),
+            Text(
+              title,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Text(
+                description,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20, color: Colors.grey[600]),
               ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(icon, size: 60, color: Colors.white),
-                SizedBox(height: 12),
-                Text(
-                  title,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
             ),
           ],
         ),
