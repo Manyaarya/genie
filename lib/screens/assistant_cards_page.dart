@@ -21,7 +21,7 @@ class AssistantCardsPage extends StatelessWidget {
               title: 'Recipe Generator',
               icon: Icons.restaurant,
               route: '/recipe',
-              description: 'Generate delicious recipes from images or ingredients.',
+              description: 'Generate delicious recipes from images.',
               imagePath: '/Users/manya./Projects/aigenie/genie/assets/images/rg.png',
               imageHeight: 300, // Custom image height
               imageWidth: 300,  // Custom image width
@@ -36,7 +36,7 @@ class AssistantCardsPage extends StatelessWidget {
             route: '/caption',
             description:
                 'Create engaging blog posts based on your favorite dishes.',
-            imagePath: '/Users/manya./Projects/aigenie/genie/assets/images/dish.png',
+            imagePath: '/Users/manya./Projects/aigenie/genie/assets/images/bd.png',
             imageHeight: 300, // Custom image height
             imageWidth: 300,  // Custom image width
             backgroundColor: Colors.teal.shade50, // Custom background color
@@ -50,9 +50,9 @@ class AssistantCardsPage extends StatelessWidget {
             route: '/ingredients',
             description:
                 'Find recipes based on the ingredients you have at home.',
-            imagePath: '/Users/manya./Projects/aigenie/genie/assets/images/dish.png',
-            imageHeight: 300, // Custom image height
-            imageWidth: 300,  // Custom image width
+            imagePath: '/Users/manya./Projects/aigenie/genie/assets/images/ing.png',
+            imageHeight: 170, // Custom image height
+            imageWidth: 280,  // Custom image width
             backgroundColor: Colors.teal.shade50, // Custom background color
             titleFontSize: 22, // Custom title font size
             descriptionFontSize: 18, // Custom description f // Example path
