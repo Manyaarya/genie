@@ -7,9 +7,10 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AiGenie'),
+        title: const Text('AiGenie!'),
         centerTitle: true,
-        backgroundColor: Colors.teal, // Custom background color for the app bar
+        backgroundColor: const Color.fromARGB(0, 0, 0, 0), // Transparent app bar for a more integrated look
+        elevation: 0, // Remove shadow for a cleaner look
       ),
       body: Stack(
         children: [
@@ -18,14 +19,22 @@ class HomeScreen extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/dish.png'), // Use your image path here
+                  image: AssetImage('assets/images/bg.jpg'), // Path to your background image
                   fit: BoxFit.cover,
-                  colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.darken), // Optional overlay for contrast
+                  colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.1), BlendMode.darken), // Overlay for better text contrast
                 ),
               ),
             ),
           ),
-          // Content on top of the background image
+          
+          // Content on top of the background image with a semi-transparent dark overlay for contrast
+          Positioned.fill(
+            child: Container(
+              color: Colors.black.withOpacity(0.4), // Add a darker semi-transparent layer for text visibility
+            ),
+          ),
+          
+          // Main content
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -36,10 +45,10 @@ class HomeScreen extends StatelessWidget {
                 const Text(
                   'Welcome to AiGenie!',
                   style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 40, // Larger font for more prominence
+                    fontWeight: FontWeight.bold, // Bold text
                     color: Colors.white,
-                    letterSpacing: 2,
+                    letterSpacing: 3, // Increased letter spacing for style
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -49,19 +58,19 @@ class HomeScreen extends StatelessWidget {
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 40),
                   child: Text(
-                    'AiGenie is your personal assistant powered by AI. From generating recipes to crafting captions, we have got you covered!',
+                    'AiGenie is your personal assistant powered by AI. From generating recipes to crafting blogs, we have got you covered!',
                     style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white70,
-                      fontWeight: FontWeight.w400,
-                      height: 1.5,
+                      fontSize: 18, // Larger font size for readability
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      fontWeight: FontWeight.w500, // Slightly bolder text
+                      height: 1.6, // Better line spacing for readability
                     ),
                     textAlign: TextAlign.center,
                   ),
                 ),
                 const SizedBox(height: 30),
 
-                // "Get Started" button
+                // "Get Started" button with more style
                 ElevatedButton(
                   onPressed: () {
                     // Navigate to the AssistantCardsPage when clicked
@@ -69,8 +78,8 @@ class HomeScreen extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                    backgroundColor: Colors.teal,
-                    textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold), // Custom button color
+                    backgroundColor: const Color.fromARGB(255, 124, 216, 165),
+                    textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -85,9 +94,9 @@ class HomeScreen extends StatelessWidget {
                   child: Text(
                     'Explore the power of AI in making your life easier and more fun!',
                     style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white70,
-                      fontWeight: FontWeight.w300,
+                      fontSize: 16, // Slightly larger for visibility
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      fontWeight: FontWeight.w800,
                     ),
                     textAlign: TextAlign.center,
                   ),
