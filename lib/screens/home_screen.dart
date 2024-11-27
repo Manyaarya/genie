@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/assistant_card.dart';
+// Make sure to import the AssistantCardsPage
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -11,19 +11,28 @@ class HomeScreen extends StatelessWidget {
         title: const Text('AiGenie'),
         centerTitle: true,
       ),
-      body: GridView.count(
-        crossAxisCount: 2,            // 2 cards per row
-        padding: const EdgeInsets.all(10),
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        children: const [
-          AssistantCard(title: 'Recipe Generator', icon: Icons.restaurant, route: '/recipe'),
-          AssistantCard(title: 'Caption Generator', icon: Icons.text_fields, route: '/caption'),
-          AssistantCard(title: 'Text Summarizer', icon: Icons.text_fields, route: './textsummarizer'),
-       
-          
-          // Add more cards as you add assistants
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Welcome to AiGenie!',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Navigate to the AssistantCardsPage when clicked
+                Navigator.pushNamed(context, '/assistantCards');
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                textStyle: const TextStyle(fontSize: 18),
+              ),
+              child: const Text('Get Started'),
+            ),
+          ],
+        ),
       ),
     );
   }

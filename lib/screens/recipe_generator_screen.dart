@@ -1,15 +1,15 @@
-import 'dart:convert';  // For encoding/decoding data
-import 'dart:io';  // For File handling
+import 'dart:convert'; // For encoding/decoding data
+import 'dart:io'; // For File handling
 import 'package:flutter/material.dart';
-import 'package:file_selector/file_selector.dart';  // For file selection
+import 'package:file_selector/file_selector.dart'; // For file selection
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:http/http.dart' as http;  // For making HTTP requests
-
+import 'package:http/http.dart' as http; // For making HTTP requests
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 
 class RecipeGeneratorScreen extends StatefulWidget {
   const RecipeGeneratorScreen({super.key});
-
+  
   @override
   _RecipeGeneratorScreenState createState() => _RecipeGeneratorScreenState();
 }
@@ -17,9 +17,9 @@ class RecipeGeneratorScreen extends StatefulWidget {
 class _RecipeGeneratorScreenState extends State<RecipeGeneratorScreen> {
   File? _selectedImage;
   String _recipeResult = '';
-  bool _isLoading = false;
+  bool _isLoadingImage = false;
 
-  // Pick an image
+
   Future<void> _pickImage() async {
     try {
       const XTypeGroup imageTypeGroup = XTypeGroup(
@@ -27,13 +27,11 @@ class _RecipeGeneratorScreenState extends State<RecipeGeneratorScreen> {
         extensions: ['jpg', 'png', 'jpeg'],
         uniformTypeIdentifiers: ['public.image'],
       );
-
       final XFile? file = await openFile(acceptedTypeGroups: [imageTypeGroup]);
-
       if (file != null) {
         setState(() {
           _selectedImage = File(file.path);
-          _recipeResult = '';  // Clear previous recipe when selecting a new image
+          _recipeResult = ''; // Clear previous recipe when selecting a new image
         });
       }
     } catch (e) {
@@ -43,43 +41,32 @@ class _RecipeGeneratorScreenState extends State<RecipeGeneratorScreen> {
     }
   }
 
-  // Generate recipe from selected image
-  Future<void> _generateRecipe() async {
+  Future<void> _generateRecipeFromImage() async {
     if (_selectedImage == null) return;
-
     setState(() {
-      _isLoading = true;
-      _recipeResult = '';  // Clear previous recipe result
+      _isLoadingImage = true;
+      _recipeResult = ''; // Clear previous recipe result
     });
-
     try {
-      // Convert image to base64
       final bytes = await _selectedImage!.readAsBytes();
       String base64Image = base64Encode(bytes);
-
-      // API endpoint and key
       final apiKey = dotenv.env['API_KEY'];
       final apiUrl = dotenv.env['API_URL'];
-
-      // Construct the correct payload structure
+      
       final response = await http.post(
         Uri.parse('$apiUrl?key=$apiKey'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'contents': [
             {
               'parts': [
                 {
                   'inline_data': {
-                    'mime_type': 'image/jpeg',  // Ensure this matches your image type
-                    'data': base64Image,  // The base64-encoded image string
+                    'mime_type': 'image/jpeg',
+                    'data': base64Image,
                   }
                 },
-                {
-                  'text': 'Generate a recipe from this image.'
-                }
+                {'text': 'Generate a recipe from this image.'}
               ]
             }
           ]
@@ -102,7 +89,7 @@ class _RecipeGeneratorScreenState extends State<RecipeGeneratorScreen> {
       });
     } finally {
       setState(() {
-        _isLoading = false;
+        _isLoadingImage = false;
       });
     }
   }
@@ -112,65 +99,140 @@ class _RecipeGeneratorScreenState extends State<RecipeGeneratorScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Recipe Generator'),
+        centerTitle: true,
+        backgroundColor: Colors.teal, // Updated color
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Display selected image
-            _selectedImage != null
-                ? Image.file(_selectedImage!, height: 200, fit: BoxFit.cover)
-                : Icon(Icons.image, size: 100, color: Colors.grey),
-
-            SizedBox(height: 20),
-
-            // Upload Image Button
-            ElevatedButton(
-              onPressed: _pickImage,
-              child: Text('Upload an Image'),
-            ),
-
-            SizedBox(height: 20),
-
-            // Generate Recipe Button
-            ElevatedButton(
-              onPressed: _generateRecipe,
-              child: _isLoading ? CircularProgressIndicator(color: Colors.white) : Text('Generate Recipe'),
-            ),
-
-            SizedBox(height: 20),
-
-            // Display the recipe result or show a loading indicator
-            if (_recipeResult.isNotEmpty) ...[
-              Text(
-                'Generated Recipe:',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-              ),
-              SizedBox(height: 10),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Text(
-                    _recipeResult,
-                    style: TextStyle(fontSize: 16),
-                    textAlign: TextAlign.center,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Card(
+                elevation: 8,
+                margin: EdgeInsets.symmetric(vertical: 10),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        'What the Recipe Generator Can Do',
+                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'This tool helps you generate recipes in two easy ways:',
+                        style: TextStyle(fontSize: 16),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 10),
+                      Text('1. Generate Recipes from Photos', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 5),
+                      Text('2. Get Recipe Suggestions', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 10),
+                    ],
                   ),
                 ),
               ),
-              SizedBox(height: 20),
-              // Regenerate Recipe Button
-              ElevatedButton(
-                onPressed: _generateRecipe,  // Regenerate the recipe
-                child: Text('Regenerate Recipe'),
+              Card(
+                elevation: 8,
+                margin: EdgeInsets.symmetric(vertical: 10),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Text('Upload a Dish Photo', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                      SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: _pickImage,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.grey.shade400, width: 2),
+                          ),
+                          child:
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child:
+                            (_selectedImage != null)
+                                ? Image.file(_selectedImage!, height: 200, fit: BoxFit.cover)
+                                : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children:[
+                                Icon(Icons.image, size: 100, color: Colors.grey),
+                                SizedBox(height :10),
+                                Text('Tap to upload an image', style :TextStyle(color :Colors.grey)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height :20),
+                      Row(
+                        mainAxisAlignment :MainAxisAlignment.spaceEvenly,
+                        children:[
+                          ElevatedButton.icon(
+                            onPressed:_pickImage,
+                            icon :Icon(Icons.upload_file),
+                            label :Text('Upload Image'),
+                          ),
+                          ElevatedButton.icon(
+                            onPressed:_generateRecipeFromImage,
+                            icon:_isLoadingImage ? CircularProgressIndicator(color :Colors.white, strokeWidth :2) :Icon(Icons.receipt),
+                            label:_isLoadingImage ?Text('Generating...') :Text('Generate Recipe'),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ] else if (!_isLoading) ...[
-              Text(
-                'No recipe generated yet.',
-                style: TextStyle(fontSize: 16),
-                textAlign: TextAlign.center,
-              ),
+              if (_recipeResult.isNotEmpty) ...[
+                Card(
+                  elevation :8,
+                  margin :EdgeInsets.symmetric(vertical :10),
+                  child :Padding(
+                    padding :const EdgeInsets.all(16.0),
+                    child :Column(
+                      children:[
+                        Text('Generated Recipe:', style :TextStyle(fontWeight :FontWeight.bold, fontSize :22), textAlign :TextAlign.center),
+                        SizedBox(height :10),
+                        SingleChildScrollView(child :
+                          Padding(padding :const EdgeInsets.all(8.0), 
+                            child :
+                              Container(decoration :BoxDecoration(color :Colors.green[50], borderRadius :BorderRadius.circular(8)),
+                                padding :const EdgeInsets.all(16.0), 
+                                child :
+                                  MarkdownBody(
+  data: _recipeResult,
+  styleSheet: MarkdownStyleSheet(
+    p: TextStyle(fontSize: 16),
+    strong: TextStyle(fontWeight: FontWeight.bold),  // Optional: Customize bold style
+  ),
+),
+                              )
+                          )
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ] else if (!_isLoadingImage) ...[
+                Card(
+                  elevation :8,
+                  margin :EdgeInsets.symmetric(vertical :10),
+                  child :
+                    Padding(padding :const EdgeInsets.all(16.0), 
+                      child :
+                        Center(child :
+                          Text('No recipe generated yet.', style :TextStyle(fontSize :16), textAlign :TextAlign.center,)
+                        )
+                    )
+                )
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );

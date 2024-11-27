@@ -22,7 +22,7 @@ class AiGenieApp extends StatelessWidget {
     return MaterialApp(
       title: 'AiGenie',
       theme: ThemeData(
-        primarySwatch: Colors.blue,  // Customize your theme colors
+        primarySwatch: Colors.teal,  // Customize your theme colors
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       initialRoute: '/',             // Define initial route
