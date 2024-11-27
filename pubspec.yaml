@@ -65,6 +65,7 @@ flutter:
     - assets/
     - .env
     - /Users/manya./Projects/aigenie/genie/assets/images/dish.png
+    - /Users/manya./Projects/aigenie/genie/assets/images/bg.jpg
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
