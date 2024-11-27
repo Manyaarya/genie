@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'meal_preferences_screen.dart';
 
 class MealPlannerScreen extends StatefulWidget {
   const MealPlannerScreen({super.key});
@@ -9,30 +10,21 @@ class MealPlannerScreen extends StatefulWidget {
 }
 
 class _MealPlannerScreenState extends State<MealPlannerScreen> {
-  // Placeholder for meal plan data
-  Map<String, dynamic>? mealPlanData;
-
-  @override
-  void initState() {
-    super.initState();
-    // Fetching data would happen after carousel introduction
-  }
-
   final List<Map<String, String>> sliderContent = [
     {
       'title': 'Plan Your Week',
       'description': 'Create personalized meal plans for the entire week!',
-      'imagePath': '/Users/manya./Projects/aigenie/genie/assets/images/rg.png', // Replace with your asset
+      'imagePath': '/Users/manya./Projects/aigenie/genie/assets/images/bd.png',
     },
     {
       'title': 'Get Recipe Suggestions',
       'description': 'Receive delicious and healthy recipe suggestions.',
-      'imagePath': '/Users/manya./Projects/aigenie/genie/assets/images/rg.png', // Replace with your asset
+      'imagePath': '/Users/manya./Projects/aigenie/genie/assets/images/bd.png',
     },
     {
       'title': 'Check This Out!',
       'description': 'Tap below to explore the Weekly Meal Planner.',
-      'imagePath': '/Users/manya./Projects/aigenie/genie/assets/images/rg.png', // Replace with your asset
+      'imagePath': '/Users/manya./Projects/aigenie/genie/assets/images/bd.png',
     },
   ];
 
@@ -61,15 +53,13 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
               },
             ),
           ),
-          // Button to proceed to meal plan
           Padding(
             padding: const EdgeInsets.only(bottom: 20),
             child: ElevatedButton.icon(
               onPressed: () {
-                // Navigate to meal plan details
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MealPlanDetailsScreen()),
+                  MaterialPageRoute(builder: (context) => const MealPreferencesScreen()),
                 );
               },
               icon: const Icon(Icons.play_arrow),
@@ -114,23 +104,6 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-// Placeholder for MealPlanDetailsScreen
-class MealPlanDetailsScreen extends StatelessWidget {
-  const MealPlanDetailsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Your Weekly Meal Plan'),
-      ),
-      body: const Center(
-        child: Text('Meal plan details will be displayed here!'),
       ),
     );
   }
