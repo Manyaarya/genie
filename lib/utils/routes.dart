@@ -8,7 +8,7 @@ import '../screens/home_screen.dart';
 Map<String, WidgetBuilder> appRoutes = {
   '/': (context) => const HomeScreen(),
   '/recipe': (context) => RecipeGeneratorScreen(),
-  '/caption': (context) => CaptionGeneratorScreen(),
+  '/caption': (context) => BlogGeneratorScreen(),
   '/assistantCards': (context) => AssistantCardsPage(), 
   '/ingredients': (context) => RecipeFromIngredientsScreen(),
   // Add other routes as you create more screens

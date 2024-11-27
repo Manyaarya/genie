@@ -1,70 +1,76 @@
-import 'dart:convert';  // For encoding/decoding data
-import 'dart:io';  // For File handling
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:file_selector/file_selector.dart';  // For file selection
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:http/http.dart' as http;  // For making HTTP requests
+import 'package:http/http.dart' as http;
+import 'package:flutter_markdown/flutter_markdown.dart'; // Import flutter_markdown package
 
-class CaptionGeneratorScreen extends StatefulWidget {
-  const CaptionGeneratorScreen({super.key});
+class BlogGeneratorScreen extends StatefulWidget {
+  const BlogGeneratorScreen({super.key});
 
   @override
-  _CaptionGeneratorScreenState createState() => _CaptionGeneratorScreenState();
+  _BlogGeneratorScreenState createState() => _BlogGeneratorScreenState();
 }
 
-class _CaptionGeneratorScreenState extends State<CaptionGeneratorScreen> {
+class _BlogGeneratorScreenState extends State<BlogGeneratorScreen> {
   File? _selectedImage;
-  String _captionResult = '';
+  String _blogResult = '';
   bool _isLoading = false;
 
-  // Method to pick an image from the file system
-  Future<void> _pickImage() async {
+  final TextEditingController _customWordLimitController = TextEditingController();
+  final List<String> _wordLimits = ['200', '500', '1000', 'Custom'];
+  String _selectedWordLimit = '200';
+
+  String _selectedTone = 'Neutral';
+  final List<String> _tones = ['Neutral', 'Formal', 'Friendly', 'Humorous', 'Inspirational'];
+
+  String _selectedContentStyle = 'Descriptive';
+  final List<String> _contentStyles = ['Descriptive', 'Narrative', 'Analytical', 'Persuasive'];
+
+  // Pick image from file system
+   Future<void> _pickImage() async {
     try {
       const XTypeGroup imageTypeGroup = XTypeGroup(
         label: 'Images',
         extensions: ['jpg', 'png', 'jpeg'],
         uniformTypeIdentifiers: ['public.image'],
       );
-
       final XFile? file = await openFile(acceptedTypeGroups: [imageTypeGroup]);
-
       if (file != null) {
         setState(() {
           _selectedImage = File(file.path);
-          _captionResult = '';
+          _blogResult = ''; // Clear previous recipe when selecting a new image
         });
       }
     } catch (e) {
       setState(() {
-        _captionResult = 'Error selecting file: $e';
+        _blogResult = 'Error selecting file: $e';
       });
     }
   }
 
-  // Method to generate a caption from the selected image using the AI model
-  Future<void> _generateCaption() async {
+
+  // Generate blog using selected image and inputs
+  Future<void> _generateBlog() async {
     if (_selectedImage == null) return;
 
     setState(() {
       _isLoading = true;
-      _captionResult = '';
+      _blogResult = '';
     });
 
     try {
-      // Convert image to base64
       final bytes = await _selectedImage!.readAsBytes();
       String base64Image = base64Encode(bytes);
-
-      // API endpoint and key
       final apiKey = dotenv.env['API_KEY'];
       final apiUrl = dotenv.env['API_URL'];
 
-      // Send API request to generate a caption from the image
+      final wordLimit = _selectedWordLimit == 'Custom' ? _customWordLimitController.text : _selectedWordLimit;
+
       final response = await http.post(
         Uri.parse('$apiUrl?key=$apiKey'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'contents': [
             {
@@ -76,7 +82,7 @@ class _CaptionGeneratorScreenState extends State<CaptionGeneratorScreen> {
                   }
                 },
                 {
-                  'text': 'Generate a small caption for this image.'
+                  'text': 'Generate a ${_selectedTone.toLowerCase()} blog in ${_selectedContentStyle.toLowerCase()} style from this image with a word limit of $wordLimit words.'
                 }
               ]
             }
@@ -87,16 +93,16 @@ class _CaptionGeneratorScreenState extends State<CaptionGeneratorScreen> {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         setState(() {
-          _captionResult = data['candidates'][0]['content']['parts'][0]['text'] ?? 'No caption generated.';
+          _blogResult = data['candidates'][0]['content']['parts'][0]['text'] ?? 'No blog generated.';
         });
       } else {
         setState(() {
-          _captionResult = 'Error: ${response.statusCode} ${response.reasonPhrase}';
+          _blogResult = 'Error: ${response.statusCode} ${response.reasonPhrase}';
         });
       }
     } catch (e) {
       setState(() {
-        _captionResult = 'Error generating caption: $e';
+        _blogResult = 'Error generating blog: $e';
       });
     } finally {
       setState(() {
@@ -108,50 +114,67 @@ class _CaptionGeneratorScreenState extends State<CaptionGeneratorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Caption Generator'),
-      ),
-      body: Padding(
+      appBar: AppBar(title: Text('Blog Generator')),
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Display the selected image or a placeholder
-            _selectedImage != null
-                ? Image.file(_selectedImage!, height: 200, fit: BoxFit.cover)
-                : Icon(Icons.image, size: 100, color: Colors.grey),
-
+            // Display the selected image or placeholder
+            if (_selectedImage != null)
+              Image.file(_selectedImage!, height: 200, fit: BoxFit.cover)
+            else
+              Icon(Icons.image, size: 100, color: Colors.grey),
             SizedBox(height: 20),
 
-            // Button to pick an image
+            ElevatedButton(onPressed: _pickImage, child: Text('Upload Image')),
+            SizedBox(height: 20),
+
+            _buildDropdown('Select Tone', _tones, _selectedTone, (value) => setState(() => _selectedTone = value!)),
+            SizedBox(height: 20),
+
+            _buildDropdown('Select Content Style', _contentStyles, _selectedContentStyle, (value) => setState(() => _selectedContentStyle = value!)),
+            SizedBox(height: 20),
+
+            _buildDropdown('Word Limit', _wordLimits, _selectedWordLimit, (value) => setState(() => _selectedWordLimit = value!)),
+            if (_selectedWordLimit == 'Custom')
+              TextField(
+                controller: _customWordLimitController,
+                decoration: InputDecoration(labelText: 'Enter custom word limit'),
+                keyboardType: TextInputType.number,
+              ),
+            SizedBox(height: 20),
+
             ElevatedButton(
-              onPressed: _pickImage,
-              child: Text('Upload an Image'),
+              onPressed: _generateBlog,
+              child: _isLoading ? CircularProgressIndicator(color: Colors.white) : Text('Generate Blog'),
             ),
-
             SizedBox(height: 20),
 
-            // Button to generate caption
-            ElevatedButton(
-              onPressed: _generateCaption,
-              child: _isLoading
-                  ? CircularProgressIndicator(color: Colors.white)
-                  : Text('Generate Caption'),
-            ),
-
-            SizedBox(height: 20),
-
-            // Display the generated caption in a formatted manner
-            _captionResult.isNotEmpty
-                ? Text(
-                    _captionResult,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,  // Center the caption
-                  )
-                : Container(),
+            // Display the generated blog content with markdown
+            if (_blogResult.isNotEmpty)
+              Card(
+                elevation: 5,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: MarkdownBody(
+                    data: _blogResult, // This will parse and render the markdown content
+                  ),
+                ),
+              ),
           ],
         ),
       ),
+    );
+  }
+
+  // Dropdown widget for selecting options
+  Widget _buildDropdown(String label, List<String> items, String selectedItem, ValueChanged<String?> onChanged) {
+    return DropdownButtonFormField<String>(
+      value: selectedItem,
+      items: items.map((item) => DropdownMenuItem(value: item, child: Text(item))).toList(),
+      onChanged: onChanged,
+      decoration: InputDecoration(labelText: label),
     );
   }
 }

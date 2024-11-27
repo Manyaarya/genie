@@ -18,7 +18,7 @@ class AssistantCardsPage extends StatelessWidget {
         mainAxisSpacing: 10,
         children: const [
           AssistantCard(title: 'Recipe Generator', icon: Icons.restaurant, route: '/recipe'),
-          AssistantCard(title: 'Caption Generator', icon: Icons.text_fields, route: '/caption'),
+          AssistantCard(title: 'Blog from Dishes', icon: Icons.account_box_sharp, route: '/caption'),
           AssistantCard(title: 'Recipe from ingredients', icon: Icons.text_fields, route: '/ingredients'),
           
        //   AssistantCard(title: 'Text Summarizer', icon: Icons.text_fields, route: '/textsummarizer'),
