@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
 import 'meal_preferences_screen.dart';
+import 'meal_preferences.dart'; // Import your MealPreferences class
 
 class MealPlannerScreen extends StatefulWidget {
   const MealPlannerScreen({super.key});
@@ -14,17 +15,17 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
     {
       'title': 'Plan Your Week',
       'description': 'Create personalized meal plans for the entire week!',
-      'imagePath': '/Users/manya./Projects/aigenie/genie/assets/images/bd.png',
+      'imagePath': 'assets/images/bd.png',
     },
     {
       'title': 'Get Recipe Suggestions',
       'description': 'Receive delicious and healthy recipe suggestions.',
-      'imagePath': '/Users/manya./Projects/aigenie/genie/assets/images/bd.png',
+      'imagePath': 'assets/images/bd.png',
     },
     {
       'title': 'Check This Out!',
       'description': 'Tap below to explore the Weekly Meal Planner.',
-      'imagePath': '/Users/manya./Projects/aigenie/genie/assets/images/bd.png',
+      'imagePath': 'assets/images/bd.png',
     },
   ];
 
@@ -57,9 +58,19 @@ class _MealPlannerScreenState extends State<MealPlannerScreen> {
             padding: const EdgeInsets.only(bottom: 20),
             child: ElevatedButton.icon(
               onPressed: () {
+                // Create a MealPreferences object with default values or user inputs
+                final MealPreferences preferences = MealPreferences(
+                  diet: 'balanced',       // Default or fetched value
+                  cuisine: 'any',         // Default or fetched value
+                  intolerances: [],       // Customize as needed
+                );
+
+                // Navigate to the preferences screen with the correct object
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MealPreferencesScreen()),
+                  MaterialPageRoute(
+                    builder: (context) => MealPreferencesScreen(preferences: preferences),
+                  ),
                 );
               },
               icon: const Icon(Icons.play_arrow),

@@ -131,7 +131,7 @@ class _RecipeGeneratorScreenState extends State<RecipeGeneratorScreen> {
       appBar: AppBar(
         title: Text('Recipe Generator'),
         centerTitle: true,
-        backgroundColor: Colors.teal, // Updated color
+         // Updated color
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -231,7 +231,7 @@ class _RecipeGeneratorScreenState extends State<RecipeGeneratorScreen> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
-                              decoration: BoxDecoration(color: Colors.green[50], borderRadius: BorderRadius.circular(8)),
+                              decoration: BoxDecoration(color: const Color.fromARGB(255, 255, 255, 255), borderRadius: BorderRadius.circular(8)),
                               padding: const EdgeInsets.all(16.0),
                               child: MarkdownBody(
                                 data: _recipeResult,
