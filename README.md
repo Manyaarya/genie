@@ -41,8 +41,8 @@ AiGenie is a mobile application designed to simplify cooking and content creatio
    git clone https://github.com/your-username/aigenie.git
    cd aigenie
 
-## Install Dependencies and run:
-   ```
+2 **Install Dependencies and run**:
+   ```bash
    flutter pub get
    flutter run
    
