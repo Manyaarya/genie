@@ -5,9 +5,11 @@ AiGenie is a mobile application designed to simplify cooking and content creatio
 ---
 
 ## Features 🌟
+![Alt text](/Users/manya./Projects/aigenie/genie/assets/homescreen.png)
 
 1. **Recipe Generator from Images**  
    Upload a food image, and AiGenie generates a detailed recipe using the Gemini API.
+   ![Alt text](/Users/manya./Projects/aigenie/genie/assets/images/recipe.png) ![Alt text](/Users/manya./Projects/aigenie/genie/assets/images/recipe_out.png)   
 
 2. **Caption and Blog Generator**  
    Turn food images into engaging blog posts or captions. Customize tone, style, and word limits for creativity.
@@ -38,16 +40,15 @@ AiGenie is a mobile application designed to simplify cooking and content creatio
    git clone https://github.com/your-username/aigenie.git
    cd aigenie
 
- flutter pub get
-##  Install Dependencies:
-    ```bash
+## Install Dependencies:
+```flutter pub get
+   
 
-flutter pub get
-###  Set Up Environment Variables:
-Create a .env file in the root directory.
-Add your API keys:
+
+## Set Up Environment Variables
+
+1. **Create a `.env` file in the root directory.**
+2. **Add your API keys:**
 GEMINI_API_KEY=your_gemini_api_key
 SPOONACULAR_API_KEY=your_spoonacular_api_key
-### Run the App:
-flutter pub get
-flutter run
+
