@@ -13,7 +13,7 @@ class AssistantCard extends StatelessWidget {
   final double descriptionFontSize; // Customizable description font size
 
   const AssistantCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.icon,
     required this.route,
@@ -24,7 +24,7 @@ class AssistantCard extends StatelessWidget {
     this.backgroundColor = Colors.white, // Default background color
     this.titleFontSize = 20,  // Default title font size
     this.descriptionFontSize = 16, // Default description font size
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
