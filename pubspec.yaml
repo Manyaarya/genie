@@ -67,6 +67,7 @@ flutter:
   assets:
     - assets/
     - .env
+    - assets/images/
     - /Users/manya./Projects/aigenie/genie/assets/images/dish.png
     - /Users/manya./Projects/aigenie/genie/assets/images/bg.jpg
     - /Users/manya./Projects/aigenie/genie/assets/images/rg.png
