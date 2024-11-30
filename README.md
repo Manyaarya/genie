@@ -5,7 +5,8 @@ AiGenie is a mobile application designed to simplify cooking and content creatio
 ---
 
 ## Features 🌟
-![Alt text](assets/images/homescreen.png)
+<img src="assets/images/homescreen.png" alt="Home Screen" width="500" height="300">
+
 
 1. **Recipe Generator from Images**  
    Upload a food image, and AiGenie generates a detailed recipe using the Gemini API.
