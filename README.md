@@ -41,15 +41,13 @@ AiGenie is a mobile application designed to simplify cooking and content creatio
    git clone https://github.com/your-username/aigenie.git
    cd aigenie
 
-## Install Dependencies:
-```flutter pub get
+## Install Dependencies and run:
+   ```
+   flutter pub get
+   flutter run
    
 
+---
 
-## Set Up Environment Variables
 
-1. **Create a `.env` file in the root directory.**
-2. **Add your API keys:**
-GEMINI_API_KEY=your_gemini_api_key
-SPOONACULAR_API_KEY=your_spoonacular_api_key
 
